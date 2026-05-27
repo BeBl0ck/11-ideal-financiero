@@ -701,9 +701,9 @@ async function submitForm() {
   try {
     if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('PEGA_AQUI')) throw new Error('DEMO');
     const url = APPS_SCRIPT_URL + '?' + new URLSearchParams(payload).toString();
-    const res  = await fetch(url);
-    const data = await res.json();
-    if (data.error) throw new Error(data.error);
+    // mode: 'no-cors' evita el bloqueo CORS de Safari con Google Apps Script.
+    // El dato SÍ se guarda en el Sheet aunque no podamos leer la respuesta.
+    await fetch(url, { mode: 'no-cors' });
     showSuccess();
   } catch(e) {
     if (e.message === 'DEMO') { showSuccess(true); return; }
