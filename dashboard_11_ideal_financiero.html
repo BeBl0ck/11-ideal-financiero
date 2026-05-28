@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El 11 Ideal Financiero | Be Block</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #06140e;
+      --bg2: #0b2318;
+      --gold: #d7b56d;
+      --gold2: #f4d993;
+      --green: #15c579;
+      --red: #ef4d5b;
+      --white: #f7f5ee;
+      --muted: #9fb4a9;
+      --card: rgba(255,255,255,0.07);
+      --card2: rgba(255,255,255,0.11);
+      --line: rgba(255,255,255,0.13);
+      --shadow: 0 24px 80px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(215,181,109,.20), transparent 32%),
+        radial-gradient(circle at 80% 10%, rgba(21,197,121,.17), transparent 30%),
+        linear-gradient(135deg, var(--bg), var(--bg2) 55%, #020805);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .stadium-lines {
+      position: fixed; inset: 0; pointer-events: none; opacity: .14;
+      background-image: linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(circle at center, black, transparent 78%);
+      z-index: -1;
+    }
+    header { padding: 28px 24px 18px; max-width: 1280px; margin: 0 auto; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-family:'Oswald',sans-serif; font-weight: 700; letter-spacing: .03em; color: var(--gold2); font-size: 17px; }
+    .logo { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--gold2), var(--gold)); color: #08150f; display: grid; place-items: center; font-family:'Oswald',sans-serif; font-weight: 700; font-size: 16px; box-shadow: 0 0 28px rgba(215,181,109,.3); }
+    .pill { border: 1px solid var(--line); background: rgba(255,255,255,.06); padding: 10px 14px; border-radius: 999px; color: var(--muted); font-size: 14px; backdrop-filter: blur(14px); }
+    .hero { display: grid; grid-template-columns: 1.4fr .8fr; gap: 22px; align-items: stretch; }
+    .hero-card, .panel { border: 1px solid var(--line); background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.055)); border-radius: 30px; box-shadow: var(--shadow); backdrop-filter: blur(18px); }
+    .hero-card { padding: 34px; position: relative; overflow: hidden; }
+    .hero-card::after { content: ""; position: absolute; right: -90px; top: -90px; width: 260px; height: 260px; border-radius: 50%; border: 2px solid rgba(244,217,147,.23); box-shadow: inset 0 0 0 28px rgba(244,217,147,.03); }
+    h1 { margin: 0; font-size: clamp(42px, 7vw, 78px); line-height: .9; letter-spacing: -.06em; }
+    .gold { color: var(--gold2); }
+    .hero-card p { max-width: 700px; color: var(--muted); font-size: 18px; line-height: 1.55; margin: 22px 0 0; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    button, .btn { border: 0; cursor: pointer; border-radius: 999px; padding: 13px 18px; font-weight: 800; color: #08150f; background: linear-gradient(135deg, var(--gold2), var(--gold)); box-shadow: 0 14px 34px rgba(215,181,109,.2); text-decoration: none; display: inline-block; }
+    .btn-secondary { color: var(--white); background: rgba(255,255,255,.09); border: 1px solid var(--line); box-shadow: none; }
+    .status-card { padding: 24px; display: grid; gap: 16px; }
+    .countdown { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .timebox { text-align: center; border: 1px solid var(--line); background: rgba(0,0,0,.16); border-radius: 20px; padding: 16px 8px; }
+    .timebox strong { display:block; font-size: 30px; color: var(--gold2); }
+    .timebox span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+    main { max-width: 1280px; margin: 0 auto; padding: 14px 24px 60px; }
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0 22px; }
+    .metric { border: 1px solid var(--line); background: var(--card); border-radius: 24px; padding: 18px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .metric strong { display:block; font-size: 30px; margin-top: 6px; }
+    .metric small { color: var(--green); font-weight: 800; }
+    .grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 22px; align-items: start; }
+    .panel { padding: 22px; }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+    h2 { margin: 0; font-size: 24px; letter-spacing: -.03em; }
+    .sub { color: var(--muted); margin: 5px 0 0; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; }
+    th, td { padding: 14px 10px; border-bottom: 1px solid var(--line); text-align: left; font-size: 14px; }
+    th { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    tr:last-child td { border-bottom: 0; }
+    .rank { width: 34px; height: 34px; border-radius: 12px; display: grid; place-items: center; background: rgba(255,255,255,.08); font-weight: 900; }
+    .rank.top { background: linear-gradient(135deg, var(--gold2), var(--gold)); color: #08150f; }
+    .positive { color: var(--green); font-weight: 900; }
+    .negative { color: var(--red); font-weight: 900; }
+    .team-field {
+      background: linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px), radial-gradient(circle at center, transparent 0 70px, rgba(255,255,255,.09) 71px 72px, transparent 73px), linear-gradient(180deg, rgba(21,197,121,.16), rgba(21,197,121,.04));
+      background-size: 50% 100%, auto, auto;
+      border: 1px solid rgba(21,197,121,.22); border-radius: 28px; padding: 18px; min-height: 500px; position: relative; overflow: hidden;
+    }
+    .line { display: grid; gap: 12px; margin: 12px 0; }
+    .line.four { grid-template-columns: repeat(4, 1fr); }
+    .line.three { grid-template-columns: repeat(3, 1fr); }
+    .line.one { grid-template-columns: 1fr; max-width: 180px; margin-left: auto; margin-right: auto; }
+    .player-card { border: 1px solid var(--line); background: rgba(0,0,0,.22); border-radius: 18px; padding: 12px; min-height: 92px; text-align: center; position: relative; transition: transform .25s ease, background .25s ease; }
+    .player-card:hover { transform: translateY(-4px); background: rgba(0,0,0,.32); }
+    .player-card .badge { font-size: 11px; color: var(--muted); }
+    .player-card strong { display:block; margin: 6px 0 2px; font-size: 15px; }
+    .player-card small { color: var(--muted); }
+    .captain::before { content: "C"; position: absolute; top: 8px; right: 8px; width: 23px; height: 23px; border-radius: 50%; display:grid; place-items:center; background: var(--gold2); color: #08150f; font-weight: 900; font-size: 12px; }
+    .assets { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 16px; }
+    .asset { border: 1px solid var(--line); background: rgba(255,255,255,.055); border-radius: 20px; padding: 14px; }
+    .asset b { display: block; font-size: 15px; }
+    .asset span { color: var(--muted); font-size: 12px; }
+    .asset em { display:block; margin-top: 9px; font-style: normal; }
+    .ticker { color: var(--gold2); font-weight: 900; }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .tab { padding: 9px 12px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); background: rgba(255,255,255,.04); font-size: 13px; cursor: pointer; }
+    .tab.active { color: #08150f; background: var(--gold2); font-weight: 900; }
+    .news-feed { display: grid; gap: 12px; }
+    .news { border: 1px solid var(--line); background: rgba(0,0,0,.16); border-radius: 18px; padding: 14px; color: var(--muted); line-height: 1.45; }
+    .news b { color: var(--white); }
+    .loading { opacity: .5; font-size: 14px; color: var(--muted); text-align: center; padding: 24px; }
+    .cta-box { border: 1px solid rgba(215,181,109,.3); background: rgba(215,181,109,.07); border-radius: 24px; padding: 22px; text-align: center; margin-top: 22px; }
+    .cta-box h3 { margin: 0 0 8px; font-size: 22px; }
+    .cta-box p { color: var(--muted); margin: 0 0 18px; }
+    footer { max-width: 1280px; margin: 0 auto; padding: 0 24px 30px; color: var(--muted); font-size: 12px; text-align: center; }
+    @media (max-width: 980px) { .hero, .grid { grid-template-columns: 1fr; } .metrics { grid-template-columns: repeat(2, 1fr); } .assets { grid-template-columns: repeat(2, 1fr); } .line.four, .line.three { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { header, main, footer { padding-left: 14px; padding-right: 14px; } .topbar { align-items: flex-start; flex-direction: column; } .hero-card { padding: 24px; } .metrics { grid-template-columns: 1fr; } .assets { grid-template-columns: 1fr; } .line.four, .line.three { grid-template-columns: 1fr; } th:nth-child(4), td:nth-child(4) { display:none; } }
+  </style>
+</head>
+<body>
+  <div class="stadium-lines"></div>
+
+  <header>
+    <div class="topbar">
+      <div class="brand"><div class="logo">BB</div> Be Block</div>
+      <div class="pill">⚽ El Mundial de los Inversionistas · 11 Jun – 19 Jul 2026</div>
+    </div>
+
+    <section class="hero">
+      <div class="hero-card">
+        <h1>El <span class="gold">11 Ideal</span><br/>Financiero</h1>
+        <p>Arma tu alineación con 11 activos, compite durante el Mundial y demuestra quién tiene el mejor criterio financiero. Todos los activos pesan igual. Gana el XI con mayor rendimiento real.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#ranking">Ver ranking</a>
+          <!-- REEMPLAZA este link con tu Typeform cuando lo tengas -->
+          <a class="btn btn-secondary" href="https://form.typeform.com/to/XXXXXXXX" target="_blank">Registrar mi XI ⚽</a>
+        </div>
+      </div>
+
+      <div class="hero-card status-card">
+        <div>
+          <h2>Registro cierra en</h2>
+          <p class="sub">Cuando ruede el balón, las alineaciones quedan cerradas.</p>
+        </div>
+        <div class="countdown">
+          <div class="timebox"><strong id="days">--</strong><span>Días</span></div>
+          <div class="timebox"><strong id="hours">--</strong><span>Horas</span></div>
+          <div class="timebox"><strong id="mins">--</strong><span>Min</span></div>
+        </div>
+        <div class="news"><b>Regla clave:</b> sin porcentajes, sin cambios y sin rebalanceos. Tu XI queda fijo desde el inicio del Mundial.</div>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section class="metrics">
+      <div class="metric"><span>Participantes</span><strong id="metaParticipantes">--</strong><small id="metaParticipantesLabel">Cargando…</small></div>
+      <div class="metric"><span>Activos disponibles</span><strong>25</strong><small>Pool oficial</small></div>
+      <div class="metric"><span>Activo MVP</span><strong id="metaMVP">--</strong><small id="metaMVPRet">--</small></div>
+      <div class="metric"><span>Líder actual</span><strong id="metaLider">--</strong><small id="metaLiderRet">--</small></div>
+    </section>
+
+    <section class="grid">
+      <div class="panel" id="ranking">
+        <div class="panel-head">
+          <div>
+            <h2>🏆 Leaderboard Mundialista</h2>
+            <p class="sub">Ranking por rendimiento real promedio del XI. Se actualiza diariamente.</p>
+          </div>
+          <div class="pill" id="jornada">Jornada --</div>
+        </div>
+        <table>
+          <thead>
+            <tr><th></th><th>Participante</th><th>Rend.</th><th>Capitán</th></tr>
+          </thead>
+          <tbody id="leaderboard"><tr><td colspan="4" class="loading">Cargando ranking…</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>📣 Minuto Financiero</h2>
+            <p class="sub">Novedades del torneo.</p>
+          </div>
+        </div>
+        <div class="news-feed" id="newsFeed">
+          <div class="news">⏳ <b>¡Inscripciones abiertas!</b> Regístrate antes del 11 de junio y arma tu XI ganador.</div>
+          <div class="news">📌 <b>Regla clave:</b> Todos los activos pesan igual en tu equipo. No hay posiciones, no hay rebalanceo.</div>
+          <div class="news">🏆 <b>Desempate:</b> Si dos participantes empatan en rendimiento promedio, gana quien tenga mejor rendimiento en su capitán.</div>
+          <div class="news">⚽ <b>25 activos disponibles:</b> Desde NVIDIA y Bitcoin hasta CETES y Oro. Elige los que más te convenzan.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" style="margin-top:22px;" id="pool">
+      <div class="panel-head">
+        <div>
+          <h2>🌎 Pool Oficial de 25 Activos</h2>
+          <p class="sub">Un solo universo de activos. Cada participante elige 11 titulares y 1 capitán.</p>
+        </div>
+        <div class="tabs" id="filterTabs">
+          <span class="tab active" data-cat="todos">Todos</span>
+          <span class="tab" data-cat="Defensivo">Defensivos</span>
+          <span class="tab" data-cat="Índice">Índices</span>
+          <span class="tab" data-cat="Tech">Tech</span>
+          <span class="tab" data-cat="Crypto">Crypto</span>
+        </div>
+      </div>
+      <div class="assets" id="assets"><div class="loading">Cargando activos…</div></div>
+    </section>
+
+    <div class="cta-box">
+      <h3>⚽ ¿Listo para armar tu XI?</h3>
+      <p>Regístrate antes del 11 de junio, elige tus 11 activos y compite contra todos.</p>
+      <!-- REEMPLAZA este link con tu Typeform cuando lo tengas -->
+      <a class="btn" href="https://form.typeform.com/to/XXXXXXXX" target="_blank">Quiero participar →</a>
+    </div>
+  </main>
+
+  <footer>
+    El 11 Ideal Financiero · Be Block · Campaña educativa de inversión. Los rendimientos mostrados son reales pero el capital es virtual. No representa asesoría de inversión.
+  </footer>
+
+  <script>
+    // ============================================================
+    // CONFIGURACIÓN — Lee directo de Google Sheets (gviz API)
+    // ============================================================
+    const SHEET_ID = "1rPbEhKpG0kyTm6K7kHPr0e56ZDf0szFn7IL3qxgwClE";
+
+    // Fecha de cierre de inscripciones: 11 de junio de 2026 a las 12:00 (hora de apertura del Mundial)
+    const TARGET_DATE = new Date("2026-06-11T12:00:00-06:00");
+
+    // ============================================================
+    // Countdown
+    // ============================================================
+    function updateCountdown() {
+      const now = new Date();
+      const diff = TARGET_DATE - now;
+      if (diff <= 0) {
+        document.getElementById('days').textContent = "00";
+        document.getElementById('hours').textContent = "00";
+        document.getElementById('mins').textContent = "00";
+        return;
+      }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      document.getElementById('days').textContent  = String(d).padStart(2,'0');
+      document.getElementById('hours').textContent = String(h).padStart(2,'0');
+      document.getElementById('mins').textContent  = String(m).padStart(2,'0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 60000);
+
+    // ============================================================
+    // Pool de 25 activos (datos base — el % cambia desde el API)
+    // ============================================================
+    const POOL = [
+      {t:'CETES',  n:'CETES',         cat:'Defensivo',  ret:null},
+      {t:'GLD',    n:'Oro',           cat:'Defensivo',  ret:null},
+      {t:'SLV',    n:'Plata',         cat:'Defensivo',  ret:null},
+      {t:'DXY',    n:'Dólar',         cat:'Macro',      ret:null},
+      {t:'IEF',    n:'Treasury 10Y',  cat:'Bonos',      ret:null},
+      {t:'SPY',    n:'S&P 500',       cat:'Índice',     ret:null},
+      {t:'QQQ',    n:'Nasdaq 100',    cat:'Índice',     ret:null},
+      {t:'DIA',    n:'Dow Jones',     cat:'Índice',     ret:null},
+      {t:'IWM',    n:'Russell 2000',  cat:'Índice',     ret:null},
+      {t:'URTH',   n:'MSCI World',    cat:'Índice',     ret:null},
+      {t:'NVDA',   n:'NVIDIA',        cat:'Tech',       ret:null},
+      {t:'AAPL',   n:'Apple',         cat:'Tech',       ret:null},
+      {t:'MSFT',   n:'Microsoft',     cat:'Tech',       ret:null},
+      {t:'AMZN',   n:'Amazon',        cat:'Tech',       ret:null},
+      {t:'META',   n:'Meta',          cat:'Tech',       ret:null},
+      {t:'TSLA',   n:'Tesla',         cat:'Growth',     ret:null},
+      {t:'NFLX',   n:'Netflix',       cat:'Tech',       ret:null},
+      {t:'GOOGL',  n:'Google',        cat:'Tech',       ret:null},
+      {t:'BTC',    n:'Bitcoin',       cat:'Crypto',     ret:null},
+      {t:'ETH',    n:'Ethereum',      cat:'Crypto',     ret:null},
+      {t:'SOL',    n:'Solana',        cat:'Crypto',     ret:null},
+      {t:'USO',    n:'Petróleo WTI',  cat:'Energía',    ret:null},
+      {t:'UNG',    n:'Gas Natural',   cat:'Energía',    ret:null},
+      {t:'LIT',    n:'Litio',         cat:'Materiales', ret:null},
+      {t:'VNQ',    n:'Real Estate',   cat:'Inmobiliario',ret:null},
+    ];
+
+    let currentCat = 'todos';
+
+    function renderAssets(data) {
+      // Merge rendimientos del API sobre el POOL base
+      if (data && data.precios) {
+        data.precios.forEach(p => {
+          const a = POOL.find(x => x.t === p.ticker);
+          if (a) a.ret = p.ret;
+        });
+      }
+      const box = document.getElementById('assets');
+      const filtered = currentCat === 'todos' ? POOL : POOL.filter(a => a.cat === currentCat);
+      box.innerHTML = filtered.map(a => {
+        const retStr = a.ret !== null ? (a.ret >= 0 ? `+${a.ret.toFixed(2)}%` : `${a.ret.toFixed(2)}%`) : '—';
+        const cls    = a.ret === null ? '' : (a.ret >= 0 ? 'positive' : 'negative');
+        return `<div class="asset"><b>${a.n}</b><span>${a.cat} · <span class="ticker">${a.t}</span></span><em class="${cls}">${retStr}</em></div>`;
+      }).join('');
+    }
+
+    // Filtros
+    document.getElementById('filterTabs').addEventListener('click', e => {
+      const t = e.target.closest('.tab');
+      if (!t) return;
+      document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      currentCat = t.dataset.cat;
+      renderAssets(window._apiData || null);
+    });
+
+    // ============================================================
+    // Fetch de Google Sheets (gviz API — sin Apps Script)
+    // ============================================================
+    async function fetchSheet(sheetName) {
+      const url  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+      const res  = await fetch(url);
+      const text = await res.text();
+      const i0   = text.indexOf('{');
+      const i1   = text.lastIndexOf('}');
+      if (i0 === -1) throw new Error('Respuesta inválida');
+      const j    = JSON.parse(text.slice(i0, i1 + 1));
+      if (!j.table || !j.table.rows) return [];
+      const cols = j.table.cols.map(c => c.label || c.id);
+      return j.table.rows
+        .map(row => {
+          const obj = {};
+          cols.forEach((col, i) => { obj[col] = row.c?.[i]?.v ?? null; });
+          return obj;
+        })
+        .filter(r => r[cols[0]]);
+    }
+
+    async function loadData() {
+      try {
+        const [leaderRows, preciosRows] = await Promise.all([
+          fetchSheet('Leaderboard'),
+          fetchSheet('Precios')
+        ]);
+
+        // Ranking
+        const ranking = leaderRows
+          .filter(r => r['Nombre'])
+          .map(r => ({
+            nombre:      String(r['Nombre']      || ''),
+            rendimiento: parseFloat(r['Rendimiento'])  || 0,
+            capitan:     String(r['Capitan']     || ''),
+            retCapitan:  parseFloat(r['Ret_Capitan'])   || 0
+          }))
+          .sort((a, b) => {
+            const d = b.rendimiento - a.rendimiento;
+            return Math.abs(d) < 0.0001 ? b.retCapitan - a.retCapitan : d;
+          });
+
+        // Precios para el pool de activos
+        const preciosMap = {};
+        preciosRows.filter(p => p['Simbolo']).forEach(p => {
+          preciosMap[p['Simbolo']] = parseFloat(p['Rendimiento']) || 0;
+        });
+
+        const apiData = {
+          totalParticipantes: ranking.length,
+          ranking,
+          precios: preciosRows.filter(p => p['Simbolo']).map(p => ({
+            ticker: String(p['Simbolo'] || ''),
+            ret:    parseFloat(p['Rendimiento']) || 0
+          })),
+          mvp:   null,
+          lider: ranking[0] ? { nombre: ranking[0].nombre, ret: ranking[0].rendimiento } : null
+        };
+
+        // MVP = activo con mayor rendimiento
+        const sortedPre = [...apiData.precios].sort((a, b) => b.ret - a.ret);
+        if (sortedPre.length) apiData.mvp = sortedPre[0];
+
+        window._apiData = apiData;
+
+        // Métricas
+        document.getElementById('metaParticipantes').textContent      = apiData.totalParticipantes || '--';
+        document.getElementById('metaParticipantesLabel').textContent = 'Registrados';
+        document.getElementById('metaMVP').textContent    = apiData.mvp?.ticker  || '--';
+        document.getElementById('metaMVPRet').textContent = apiData.mvp?.ret != null
+          ? `${apiData.mvp.ret >= 0 ? '+' : ''}${apiData.mvp.ret.toFixed(2)}%` : '--';
+        document.getElementById('metaLider').textContent    = apiData.lider?.nombre || '--';
+        document.getElementById('metaLiderRet').textContent = apiData.lider?.ret != null
+          ? `${apiData.lider.ret >= 0 ? '+' : ''}${apiData.lider.ret.toFixed(2)}%` : '--';
+
+        // Mini leaderboard
+        const lb = document.getElementById('leaderboard');
+        if (ranking.length) {
+          lb.innerHTML = ranking.slice(0, 10).map((p, i) => `
+            <tr>
+              <td><div class="rank ${i < 3 ? 'top' : ''}">${i + 1}</div></td>
+              <td><b>${p.nombre}</b></td>
+              <td class="${p.rendimiento >= 0 ? 'positive' : 'negative'}">${p.rendimiento >= 0 ? '+' : ''}${p.rendimiento.toFixed(2)}%</td>
+              <td><span class="ticker">${p.capitan}</span></td>
+            </tr>`).join('');
+        } else {
+          lb.innerHTML = '<tr><td colspan="4" class="loading">⚽ El torneo arranca el 11 de junio. ¡Inscríbete!</td></tr>';
+        }
+
+        // Pool de activos con rendimientos reales
+        renderAssets(apiData);
+
+      } catch(e) {
+        console.error('Error cargando datos:', e);
+        renderAssets(null);
+      }
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
