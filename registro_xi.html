@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bienvenidos a la Copa Mundial 2026 · El 11 Ideal Financiero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #06140e; --bg2: #0b2318;
+      --gold: #d7b56d; --gold2: #f4d993;
+      --green: #15c579; --green2: #0e9e5f;
+      --red: #ef4d5b; --white: #f7f5ee;
+      --muted: #9fb4a9; --card: rgba(255,255,255,0.07);
+      --line: rgba(255,255,255,0.13);
+      --field: #1a5c2e; --field2: #164f27;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(215,181,109,.18), transparent 32%),
+        radial-gradient(circle at 80% 10%, rgba(21,197,121,.14), transparent 30%),
+        linear-gradient(135deg, var(--bg), var(--bg2) 55%, #020805);
+      min-height: 100vh; overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    .topbar { display:flex; align-items:center; justify-content:space-between; padding:20px 24px; max-width:720px; margin:0 auto; }
+    .brand { font-family:'Oswald',sans-serif; font-weight:700; letter-spacing:.03em; color:var(--gold2); font-size:20px; }
+
+    /* ── PROGRESS ── */
+    .progress-wrap { max-width:720px; margin:0 auto; padding:0 24px 24px; }
+    .progress-track { height:4px; background:rgba(255,255,255,.1); border-radius:99px; overflow:hidden; }
+    .progress-fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--green)); border-radius:99px; transition:width .5s ease; }
+    .progress-label { font-size:12px; color:var(--muted); margin-top:8px; }
+
+    /* ── STEPS ── */
+    .form-wrap { max-width:720px; margin:0 auto; padding:0 24px 60px; }
+    .step { display:none; animation:fadeIn .4s ease; }
+    .step.active { display:block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ── CARD ── */
+    .card { border:1px solid var(--line); background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.05)); border-radius:28px; padding:32px; backdrop-filter:blur(18px); box-shadow:0 24px 80px rgba(0,0,0,.3); }
+
+    .step-label { font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:var(--gold2); font-weight:700; margin-bottom:10px; }
+    .step-title { font-size:clamp(24px,5vw,36px); font-weight:900; letter-spacing:-.04em; line-height:1.1; margin-bottom:10px; }
+    .step-sub { color:var(--muted); font-size:16px; line-height:1.55; margin-bottom:28px; }
+
+    /* ── INPUTS ── */
+    .field-group { display:grid; gap:14px; margin-bottom:28px; }
+    .field { display:flex; flex-direction:column; gap:7px; }
+    .field label { font-size:13px; color:var(--muted); font-weight:600; letter-spacing:.04em; text-transform:uppercase; }
+    .field input { background:rgba(255,255,255,.07); border:1px solid var(--line); border-radius:14px; color:var(--white); padding:14px 16px; font-size:16px; outline:none; transition:border-color .2s; font-family:inherit; width:100%; }
+    .field input:focus { border-color:var(--gold2); }
+    .field input::placeholder { color:var(--muted); }
+
+    /* ── OPTIONS ── */
+    .options { display:grid; gap:10px; margin-bottom:28px; }
+    .opt { border:1px solid var(--line); background:rgba(255,255,255,.05); border-radius:16px; padding:16px 18px; cursor:pointer; transition:all .2s ease; display:flex; align-items:center; gap:12px; font-size:15px; user-select:none; }
+    .opt:hover { border-color:rgba(215,181,109,.4); background:rgba(215,181,109,.07); }
+    .opt.selected { border-color:var(--gold2); background:rgba(244,217,147,.12); color:var(--gold2); font-weight:700; }
+    .opt .opt-icon { font-size:20px; flex-shrink:0; }
+    .opt .opt-check { width:22px; height:22px; border-radius:50%; border:2px solid var(--line); display:grid; place-items:center; margin-left:auto; flex-shrink:0; font-size:12px; transition:all .2s; }
+    .opt.selected .opt-check { background:var(--gold2); border-color:var(--gold2); color:#08150f; }
+
+    /* ── BUTTONS ── */
+    .btn-primary { width:100%; padding:16px; border:none; cursor:pointer; border-radius:999px; font-size:16px; font-weight:800; background:linear-gradient(135deg,var(--gold2),var(--gold)); color:#08150f; box-shadow:0 14px 34px rgba(215,181,109,.25); transition:transform .15s, box-shadow .15s, opacity .2s; font-family:inherit; }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 18px 40px rgba(215,181,109,.35); }
+    .btn-primary:disabled { opacity:.35; cursor:not-allowed; transform:none; }
+    .btn-back { background:none; border:1px solid var(--line); color:var(--muted); border-radius:999px; padding:12px 20px; font-size:14px; cursor:pointer; font-family:inherit; transition:all .2s; margin-top:10px; }
+    .btn-back:hover { border-color:var(--muted); color:var(--white); }
+    .btn-row { display:flex; flex-direction:column; gap:8px; }
+    .btn-whatsapp { width:100%; padding:16px; border:none; cursor:pointer; border-radius:999px; font-size:16px; font-weight:800; background:#25d366; color:#fff; box-shadow:0 14px 34px rgba(37,211,102,.3); transition:transform .15s, box-shadow .15s; font-family:inherit; text-decoration:none; display:block; text-align:center; }
+    .btn-whatsapp:hover { transform:translateY(-2px); box-shadow:0 18px 40px rgba(37,211,102,.4); }
+
+    /* ── ERROR ── */
+    .error-msg { color:var(--red); font-size:13px; margin-top:8px; display:none; }
+
+    /* ── SEPARATOR CARD ── */
+    .separator-card { text-align:center; padding:50px 32px; background:linear-gradient(135deg,rgba(21,197,121,.12),rgba(215,181,109,.10)); border:1px solid rgba(215,181,109,.25); }
+    .sep-emoji { font-size:72px; margin-bottom:20px; display:block; }
+    .sep-title { font-size:clamp(28px,5vw,44px); font-weight:900; letter-spacing:-.04em; line-height:1.1; margin-bottom:16px; }
+    .sep-title .gold { color:var(--gold2); }
+    .sep-body { color:var(--muted); font-size:17px; line-height:1.6; max-width:480px; margin:0 auto 24px; }
+
+    /* Prize badge */
+    .prize-badge { display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,rgba(215,181,109,.2),rgba(244,217,147,.1)); border:1px solid rgba(215,181,109,.4); border-radius:999px; padding:10px 20px; font-size:16px; font-weight:800; color:var(--gold2); margin-bottom:32px; }
+
+    /* ── REGLAS ── */
+    .rules-list { display:grid; gap:12px; margin-bottom:32px; text-align:left; }
+    .rule-item { display:grid; grid-template-columns:40px 1fr; align-items:start; gap:0; background:rgba(255,255,255,.06); border:1px solid var(--line); border-radius:16px; padding:16px; }
+    .rule-item.highlight { background:rgba(244,217,147,.08); border-color:rgba(215,181,109,.3); }
+    .rule-icon { font-size:20px; line-height:1.4; }
+    .rule-text { font-size:14px; line-height:1.55; color:var(--white); }
+    .rule-text strong { color:var(--gold2); }
+    .rule-tag { display:inline-block; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--gold2); margin-bottom:3px; }
+
+    /* ══════════════════════════════════════════
+       CAMPO DE FÚTBOL (REGISTRO)
+    ══════════════════════════════════════════ */
+    .field-title { font-size:18px; font-weight:800; margin-bottom:4px; }
+    .field-counter { font-size:14px; color:var(--muted); margin-bottom:16px; }
+    .counter-num { color:var(--gold2); font-weight:900; }
+
+    .soccer-field {
+      background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0px, rgba(255,255,255,.035) 1px, transparent 1px, transparent 60px),
+        linear-gradient(180deg, var(--field) 0%, var(--field2) 50%, var(--field) 100%);
+      border:2px solid rgba(255,255,255,.12); border-radius:24px;
+      padding:18px 14px; position:relative; overflow:hidden;
+    }
+    .soccer-field::before { content:""; position:absolute; left:50%; top:0; bottom:0; width:1px; background:rgba(255,255,255,.1); transform:translateX(-50%); }
+    .soccer-field::after { content:""; position:absolute; left:50%; top:50%; width:90px; height:90px; border:1px solid rgba(255,255,255,.1); border-radius:50%; transform:translate(-50%,-50%); }
+
+    .pos-section { margin-bottom:10px; position:relative; z-index:1; }
+    .pos-label { text-align:center; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:rgba(255,255,255,.45); margin-bottom:8px; }
+    .pos-row { display:flex; gap:8px; justify-content:center; }
+
+    .slot {
+      flex:1; max-width:150px; min-height:86px;
+      background:rgba(0,0,0,.28); border:1.5px dashed rgba(255,255,255,.18);
+      border-radius:16px; padding:8px 6px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:4px; cursor:pointer; transition:all .2s; text-align:center; position:relative;
+    }
+    .slot:hover { border-color:rgba(244,217,147,.5); background:rgba(0,0,0,.4); transform:translateY(-2px); }
+    .slot.filled { border-style:solid; border-color:rgba(244,217,147,.35); background:rgba(0,0,0,.45); }
+    .slot-empty-icon { font-size:22px; opacity:.4; }
+    .slot-pos-tag { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:rgba(255,255,255,.4); }
+    .slot-logo { width:34px; height:34px; border-radius:8px; object-fit:contain; }
+    .slot-ticker { font-size:13px; font-weight:900; color:var(--gold2); }
+    .slot-name-small { font-size:10px; color:var(--muted); line-height:1.2; }
+    .slot-badge-c { position:absolute; top:5px; right:5px; width:18px; height:18px; background:var(--gold2); color:#08150f; border-radius:50%; font-size:9px; font-weight:900; display:grid; place-items:center; }
+    .slot-remove { position:absolute; top:5px; left:5px; width:18px; height:18px; background:rgba(239,77,91,.8); color:#fff; border-radius:50%; font-size:10px; font-weight:900; display:none; place-items:center; cursor:pointer; }
+    .slot:hover .slot-remove { display:grid; }
+
+    /* ══════════════════════════════════════════
+       MODAL PICKER DE ACTIVOS
+    ══════════════════════════════════════════ */
+    .picker-overlay {
+      position:fixed; inset:0; background:rgba(0,0,0,.75); backdrop-filter:blur(8px);
+      z-index:100; display:none; align-items:flex-end; justify-content:center;
+    }
+    .picker-overlay.open { display:flex; animation:overlayIn .25s ease; }
+    @keyframes overlayIn { from { opacity:0; } to { opacity:1; } }
+
+    .picker-sheet {
+      background:linear-gradient(180deg,#0f2318,#08160e);
+      border:1px solid var(--line); border-radius:28px 28px 0 0;
+      width:100%; max-width:760px; max-height:88vh;
+      display:flex; flex-direction:column;
+      animation:sheetUp .3s ease;
+    }
+    @keyframes sheetUp { from { transform:translateY(40px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+
+    .picker-header { padding:18px 20px 14px; border-bottom:1px solid var(--line); flex-shrink:0; }
+    .picker-drag { width:40px; height:4px; background:rgba(255,255,255,.2); border-radius:99px; margin:0 auto 14px; }
+    .picker-title { font-size:16px; font-weight:800; margin-bottom:10px; }
+    .picker-title span { color:var(--gold2); }
+    .picker-search { background:rgba(255,255,255,.07); border:1px solid var(--line); border-radius:12px; color:var(--white); padding:10px 14px; font-size:14px; outline:none; width:100%; font-family:inherit; margin-bottom:10px; }
+    .picker-search:focus { border-color:var(--gold2); }
+    .picker-search::placeholder { color:var(--muted); }
+    .picker-cats { display:flex; gap:6px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none; }
+    .picker-cats::-webkit-scrollbar { display:none; }
+    .picker-cat { border:1px solid var(--line); background:rgba(255,255,255,.05); border-radius:999px; padding:7px 12px; font-size:12px; font-weight:600; color:var(--muted); cursor:pointer; white-space:nowrap; transition:all .15s; flex-shrink:0; }
+    .picker-cat.active { background:var(--gold2); border-color:var(--gold2); color:#08150f; font-weight:800; }
+    .picker-body { overflow-y:auto; padding:16px 20px; flex:1; }
+    .asset-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(130px,1fr)); gap:10px; }
+
+    .asset-card {
+      border:1px solid var(--line); background:rgba(255,255,255,.05);
+      border-radius:18px; padding:14px 10px; text-align:center;
+      cursor:pointer; transition:all .2s; position:relative;
+    }
+    .asset-card:hover:not(.taken) { border-color:rgba(244,217,147,.5); background:rgba(244,217,147,.08); transform:translateY(-2px); }
+    .asset-card.taken { opacity:.35; cursor:not-allowed; }
+    .asset-card.taken::after { content:"✓ Elegido"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--gold2); background:rgba(0,0,0,.5); border-radius:18px; }
+    .ac-logo { width:44px; height:44px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; }
+    .ac-logo img { width:40px; height:40px; border-radius:10px; object-fit:contain; background:rgba(255,255,255,.08); padding:4px; }
+    .ac-ticker { font-size:14px; font-weight:900; color:var(--gold2); margin-bottom:2px; }
+    .ac-name { font-size:11px; color:var(--muted); line-height:1.3; }
+    .ac-cat { display:inline-block; font-size:10px; padding:3px 7px; border-radius:999px; background:rgba(255,255,255,.08); color:var(--muted); margin-top:6px; }
+
+    /* ══════════════════════════════════════════
+       CAPITÁN
+    ══════════════════════════════════════════ */
+    .captain-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:28px; }
+    .cap-opt { border:1px solid var(--line); background:rgba(255,255,255,.05); border-radius:16px; padding:16px 10px; text-align:center; cursor:pointer; transition:all .2s; }
+    .cap-opt:hover { border-color:rgba(244,217,147,.4); background:rgba(244,217,147,.07); }
+    .cap-opt.selected { border-color:var(--gold2); background:rgba(244,217,147,.12); }
+    .cap-logo { width:40px; height:40px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; }
+    .cap-logo img { width:36px; height:36px; border-radius:8px; object-fit:contain; background:rgba(255,255,255,.08); padding:3px; }
+    .cap-ticker { font-size:15px; font-weight:900; color:var(--gold2); }
+    .cap-name { font-size:11px; color:var(--muted); margin-top:2px; }
+    .cap-c { font-size:18px; margin-bottom:4px; }
+
+    /* ══════════════════════════════════════════
+       SUCCESS / CANCHA FINAL
+    ══════════════════════════════════════════ */
+    .success-card { text-align:center; padding:32px; }
+    .success-icon { font-size:72px; margin-bottom:16px; display:block; }
+    .success-title { font-size:clamp(26px,5vw,34px); font-weight:900; letter-spacing:-.04em; margin-bottom:10px; }
+    .success-sub { color:var(--muted); font-size:15px; line-height:1.6; margin-bottom:24px; }
+    .spinner { display:none; width:32px; height:32px; border:3px solid rgba(255,255,255,.15); border-top-color:var(--gold2); border-radius:50%; animation:spin .8s linear infinite; margin:60px auto; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* Cancha en success */
+    .success-field {
+      background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px, transparent 1px, transparent 50px),
+        linear-gradient(180deg, var(--field) 0%, var(--field2) 50%, var(--field) 100%);
+      border:2px solid rgba(255,255,255,.12); border-radius:20px;
+      padding:20px 12px; position:relative; overflow:hidden;
+      margin-bottom:20px;
+    }
+    .success-field::before { content:""; position:absolute; left:50%; top:0; bottom:0; width:1px; background:rgba(255,255,255,.08); transform:translateX(-50%); }
+    .success-field::after { content:""; position:absolute; left:50%; top:50%; width:70px; height:70px; border:1px solid rgba(255,255,255,.08); border-radius:50%; transform:translate(-50%,-50%); }
+
+    .sf-section { position:relative; z-index:1; margin-bottom:10px; }
+    .sf-label { text-align:center; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:rgba(255,255,255,.4); margin-bottom:6px; }
+    .sf-row { display:flex; gap:6px; justify-content:center; }
+    .sf-slot { flex:1; max-width:120px; min-height:72px; background:rgba(0,0,0,.32); border:1px solid rgba(255,255,255,.15); border-radius:12px; padding:6px 4px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; text-align:center; position:relative; }
+    .sf-slot.is-cap { border-color:var(--gold2); background:rgba(244,217,147,.1); }
+    .sf-slot .sf-c { position:absolute; top:4px; right:4px; width:16px; height:16px; background:var(--gold2); color:#08150f; border-radius:50%; font-size:8px; font-weight:900; display:grid; place-items:center; }
+    .sf-ticker { font-size:12px; font-weight:900; color:var(--gold2); }
+    .sf-name { font-size:9px; color:var(--muted); line-height:1.2; }
+
+    @media (max-width:600px) {
+      .topbar, .form-wrap { padding-left:14px; padding-right:14px; }
+      .card { padding:22px 16px; }
+      .slot { max-width:90px; min-height:76px; }
+      .slot-ticker { font-size:11px; }
+      .captain-grid { grid-template-columns:repeat(2,1fr); }
+      .asset-grid { grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); }
+      .sf-slot { max-width:80px; min-height:60px; }
+      .sf-ticker { font-size:10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="topbar">
+  <div style="font-size:13px;color:var(--muted)">⚽ El 11 Ideal Financiero</div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="progress-label" id="progressLabel"></div>
+</div>
+
+<div class="form-wrap">
+
+  <!-- ═══ PASO 1 — Bienvenida ═══ -->
+  <div class="step active" id="step1">
+    <div class="card separator-card">
+      <span class="sep-emoji">⚽</span>
+      <h1 class="sep-title">Bienvenidos a la<br/><span class="gold">Copa Mundial 2026</span><br/>El 11 Ideal Financiero</h1>
+      <p class="sep-body">Arma tu equipo de 11 activos reales y gana quien tenga el mejor rendimiento promedio durante el Mundial de FIFA 2026.</p>
+      <div class="prize-badge">🏆 Gana hasta $10,000 pesos</div>
+      <button class="btn-primary" style="max-width:320px;margin:0 auto;display:block" onclick="goStep(1,2)">Registrar mi 11 →</button>
+    </div>
+  </div>
+
+  <!-- ═══ PASO 2 — Datos ═══ -->
+  <div class="step" id="step2">
+    <div class="card">
+      <div class="step-label">Primero lo primero</div>
+      <h2 class="step-title">¿Quién eres? 👋</h2>
+      <p class="step-sub">Para guardarte en el ranking y mandarte actualizaciones por WhatsApp.</p>
+      <div class="field-group">
+        <div class="field"><label>Nombre completo</label><input type="text" id="nombre" placeholder="Tu nombre y apellido" autocomplete="name"/></div>
+        <div class="field"><label>Email</label><input type="email" id="email" placeholder="tu@email.com" autocomplete="email"/></div>
+        <div class="field"><label>WhatsApp</label><input type="tel" id="whatsapp" placeholder="+52 55 1234 5678" autocomplete="tel"/></div>
+      </div>
+      <p class="error-msg" id="err2">Por favor llena todos los campos.</p>
+      <p class="error-msg" id="err2dup" style="display:none"></p>
+      <div class="btn-row">
+        <button class="btn-primary" id="btnStep2" onclick="checkDuplicateAndContinue()">Continuar →</button>
+        <button class="btn-back" onclick="goStep(2,1)">← Atrás</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PASO 3 — Reglas ═══ -->
+  <div class="step" id="step3">
+    <div class="card">
+      <div class="step-label">Antes de empezar</div>
+      <h2 class="step-title">Las reglas<br/>del juego 📋</h2>
+      <p class="step-sub">Lee con atención — son simples pero importantes.</p>
+
+      <div class="rules-list">
+        <div class="rule-item">
+          <div class="rule-icon">1️⃣</div>
+          <div class="rule-text">Elige <strong>11 activos:</strong> 1 portero, 3 defensas, 4 medios, 3 delanteros</div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-icon">🔒</div>
+          <div class="rule-text">No puedes repetir activos, cada jugador es único en tu equipo</div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-icon">📌</div>
+          <div class="rule-text">Tu <strong>11</strong> queda congelado desde el pitazo inicial del <strong>11 de junio</strong></div>
+        </div>
+        <div class="rule-item">
+          <div class="rule-icon">🏆</div>
+          <div class="rule-text">Gana quien tenga el <strong>mayor rendimiento promedio real</strong> al final del Mundial</div>
+        </div>
+        <div class="rule-item highlight">
+          <div class="rule-icon">⚠️</div>
+          <div class="rule-text">
+            <div class="rule-tag">Regla clave</div><br/>
+            Tu 11 queda <strong>fijo desde el inicio del Mundial</strong> — sin cambios y sin rebalanceos
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-primary" onclick="goStep(3,4)">Armar mi 11 →</button>
+        <button class="btn-back" onclick="goStep(3,2)">← Atrás</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PASO 4 — CAMPO ═══ -->
+  <div class="step" id="step4">
+    <div class="card" style="padding:22px 18px">
+      <div class="field-title">⚽ Arma tu 11</div>
+      <p class="field-counter">Toca cada posición para elegir tu activo · <span class="counter-num" id="selCount">0</span>/11 seleccionados</p>
+
+      <div class="soccer-field">
+        <div class="pos-section">
+          <div class="pos-label">⚔️ Delanteros</div>
+          <div class="pos-row">
+            <div class="slot" id="slot-del1" onclick="openPicker('del1')"><span class="slot-empty-icon">+</span><span class="slot-pos-tag">DEL 1</span></div>
+            <div class="slot" id="slot-del2" onclick="openPicker('del2')"><span class="slot-empty-icon">+</span><span class="slot-pos-tag">DEL 2</span></div>
+            <div class="slot" id="slot-del3" onclick="openPicker('del3')"><span class="slot-empty-icon">+</span><span class="slot-pos-tag">DEL 3</span></div>
+          </div>
+        </div>
+        <div class="pos-section">
+          <div class="pos-label">🔁 Mediocampistas</div>
+          <div class="pos-row">
+            <div class="slot" id="slot-med1" onclick="openPicker('med1')"><span class="slot-empty-icon">+</span><span class="slot-pos-tag">MED 1</span></div>
+            <div class="slot" id="slot-med2" onclick="openPicker('med2')"><span class="slot-empty-icon">+</span><span class="slot-pos-tag">MED 2</span></div>
+            <div class="slot" id="slot-med3" onclick="openPicker('med3')"><span class="slot-empty-icon">+</span><span class="slot-pos-tag">MED 3</span></div>
+            <div class="slot" id="slot-med4" onclick="openPicker('med4')"><span class="slot-empty-icon">+</span><span class="slot-pos-tag">MED 4</span></div>
+          </div>
+        </div>
+        <div class="pos-section">
+          <div class="pos-label">🛡️ Defensas</div>
+          <div class="pos-row">
+            <div class="slot" id="slot-def1" onclick="openPicker('def1')"><span class="slot-empty-icon">+</span><span class="slot-pos-tag">DEF 1</span></div>
+            <div class="slot" id="slot-def2" onclick="openPicker('def2')"><span class="slot-empty-icon">+</span><span class="slot-pos-tag">DEF 2</span></div>
+            <div class="slot" id="slot-def3" onclick="openPicker('def3')"><span class="slot-empty-icon">+</span><span class="slot-pos-tag">DEF 3</span></div>
+          </div>
+        </div>
+        <div class="pos-section" style="margin-bottom:0">
+          <div class="pos-label">🧤 Portero</div>
+          <div class="pos-row">
+            <div class="slot" id="slot-por1" onclick="openPicker('por1')" style="max-width:160px"><span class="slot-empty-icon">+</span><span class="slot-pos-tag">PORTERO</span></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="error-msg" id="err4" style="margin-top:12px">Debes seleccionar los 11 activos para continuar.</p>
+      <div class="btn-row" style="margin-top:16px">
+        <button class="btn-primary" id="btnStep4" onclick="goStep(4,5)" disabled>Elegir mi capitán →</button>
+        <button class="btn-back" onclick="goStep(4,3)">← Atrás</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PASO 5 — CAPITÁN ═══ -->
+  <div class="step" id="step5">
+    <div class="card">
+      <div class="step-label">El toque final</div>
+      <h2 class="step-title">¿Quién es tu capitán? 🏅</h2>
+      <p class="step-sub">Si hay empate en rendimiento promedio, tu capitán desempata con su rendimiento individual.</p>
+      <div class="captain-grid" id="captainGrid"></div>
+      <p class="error-msg" id="err5">Por favor elige a tu capitán.</p>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="goStep(5,6)">Continuar →</button>
+        <button class="btn-back" onclick="goStep(5,4)">← Atrás</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PASO 6 — Experiencia ═══ -->
+  <div class="step" id="step6">
+    <div class="card">
+      <div class="step-label">Cuéntanos un poco</div>
+      <h2 class="step-title">¿Cuánto tiempo llevas invirtiendo?</h2>
+      <p class="step-sub">No hay respuesta mala — todos empezamos desde cero.</p>
+      <div class="options" id="opts_experiencia">
+        <div class="opt" data-val="nunca"  onclick="selectOpt(this,'experiencia')"><span class="opt-icon">🐣</span>Nunca he invertido, esto sería mi primera vez<span class="opt-check">✓</span></div>
+        <div class="opt" data-val="menos1" onclick="selectOpt(this,'experiencia')"><span class="opt-icon">📚</span>Menos de 1 año, soy principiante<span class="opt-check">✓</span></div>
+        <div class="opt" data-val="1a3"    onclick="selectOpt(this,'experiencia')"><span class="opt-icon">📈</span>Entre 1 y 3 años, tengo algo de experiencia<span class="opt-check">✓</span></div>
+        <div class="opt" data-val="mas3"   onclick="selectOpt(this,'experiencia')"><span class="opt-icon">🧠</span>Más de 3 años, ya sé lo que hago<span class="opt-check">✓</span></div>
+      </div>
+      <p class="error-msg" id="err6">Por favor selecciona una opción.</p>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="goStep(6,7)">Continuar →</button>
+        <button class="btn-back" onclick="goStep(6,5)">← Atrás</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PASO 7 — Perfil ═══ -->
+  <div class="step" id="step7">
+    <div class="card">
+      <div class="step-label">Tu perfil de inversión</div>
+      <h2 class="step-title">¿Con cuál te identificas más?</h2>
+      <div class="options" id="opts_perfil">
+        <div class="opt" data-val="conservador" onclick="selectOpt(this,'perfil')"><span class="opt-icon">🛡️</span>Conservador — prefiero no perder aunque gane poco<span class="opt-check">✓</span></div>
+        <div class="opt" data-val="moderado"    onclick="selectOpt(this,'perfil')"><span class="opt-icon">⚖️</span>Moderado — acepto volatilidad si hay buen potencial<span class="opt-check">✓</span></div>
+        <div class="opt" data-val="agresivo"    onclick="selectOpt(this,'perfil')"><span class="opt-icon">🚀</span>Agresivo — busco alto rendimiento aunque haya riesgo<span class="opt-check">✓</span></div>
+        <div class="opt" data-val="nose"        onclick="selectOpt(this,'perfil')"><span class="opt-icon">🤷</span>No sé todavía, eso quiero aprender<span class="opt-check">✓</span></div>
+      </div>
+      <p class="error-msg" id="err7">Por favor selecciona una opción.</p>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="goStep(7,8)">Registrar mi 11 →</button>
+        <button class="btn-back" onclick="goStep(7,6)">← Atrás</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PASO 8 — RESULTADO ═══ -->
+  <div class="step" id="step8">
+    <div class="card success-card">
+      <div class="spinner" id="spinner"></div>
+      <div id="successContent" style="display:none">
+        <span class="success-icon">🏆</span>
+        <h2 class="success-title">¡Tu 11 está registrado!</h2>
+        <p class="success-sub">Bienvenido a la Copa Mundial de Inversiones 2026.<br/>El torneo arranca el <strong style="color:var(--white)">11 de junio</strong>.</p>
+
+        <!-- Cancha con el equipo -->
+        <div class="success-field" id="successField"></div>
+
+        <!-- Botón WhatsApp -->
+        <a href="https://chat.whatsapp.com/REEMPLAZA_CON_TU_LINK" class="btn-whatsapp" style="margin-top:8px">
+          💬 Unirme al grupo de WhatsApp
+        </a>
+
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-top:20px">Sigue <strong style="color:var(--white)">@bebl0ck</strong> para el Minuto Financiero diario. ¡Que gane el mejor criterio!</p>
+      </div>
+      <!-- Ya registrado -->
+      <div id="duplicateContent" style="display:none">
+        <span class="success-icon">🚫</span>
+        <h2 class="success-title">Ya estás registrado</h2>
+        <p class="success-sub">Encontramos un registro previo con el mismo <strong id="duplicateField" style="color:var(--white)">correo electrónico</strong>.<br/>Solo se permite un 11 por participante.</p>
+        <div style="background:rgba(244,217,147,.08);border:1px solid rgba(244,217,147,.25);border-radius:16px;padding:20px;margin-bottom:20px;text-align:left">
+          <p style="font-size:13px;color:var(--muted);line-height:1.7">¿Cometiste un error al armar tu equipo?<br/>Escríbenos a <strong style="color:var(--gold2)">hola@bebl0ck.mx</strong> y lo revisamos.</p>
+        </div>
+        <a href="https://chat.whatsapp.com/REEMPLAZA_CON_TU_LINK" class="btn-whatsapp">💬 Unirme al grupo de WhatsApp</a>
+      </div>
+
+      <!-- Error técnico -->
+      <div id="errorContent" style="display:none">
+        <span class="success-icon">😬</span>
+        <h2 class="success-title">Algo salió mal</h2>
+        <p class="success-sub" id="errorMsg">Hubo un problema técnico. Intenta de nuevo.</p>
+        <button class="btn-primary" onclick="retrySubmit()">Reintentar</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end form-wrap -->
+
+<!-- MODAL PICKER DE ACTIVOS -->
+<div class="picker-overlay" id="pickerOverlay" onclick="closePickerOnBg(event)">
+  <div class="picker-sheet">
+    <div class="picker-header">
+      <div class="picker-drag"></div>
+      <div class="picker-title">Elige el activo para <span id="pickerSlotLabel">—</span></div>
+      <input class="picker-search" id="pickerSearch" placeholder="Buscar por nombre o ticker…" oninput="renderPickerGrid()" />
+      <div class="picker-cats" id="pickerCats"></div>
+    </div>
+    <div class="picker-body">
+      <div class="asset-grid" id="pickerGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════
+//  CONFIG
+// ════════════════════════════════════
+const WEBHOOK_URL = "https://hook.us2.make.com/8bo3m62f6roq2eupbtm3f6kmd38appu4";
+const CHECK_URL   = "https://hook.us2.make.com/gvtiohk9pn4e6ffg1fuiek2v8exsiaas";
+const WA_LINK     = "https://chat.whatsapp.com/REEMPLAZA_CON_TU_LINK";
+
+// ════════════════════════════════════
+//  POOL DE 25 ACTIVOS
+// ════════════════════════════════════
+const POOL = [
+  {t:'CETES', n:'CETES',         cat:'Defensivo',    logo:'🇲🇽', type:'emoji'},
+  {t:'GLD',   n:'Oro',           cat:'Defensivo',    logo:'🥇',  type:'emoji'},
+  {t:'SLV',   n:'Plata',         cat:'Defensivo',    logo:'🥈',  type:'emoji'},
+  {t:'DXY',   n:'Dólar',         cat:'Macro',        logo:'💵',  type:'emoji'},
+  {t:'IEF',   n:'Treasury 10Y',  cat:'Bonos',        logo:'🏛️', type:'emoji'},
+  {t:'SPY',   n:'S&P 500',       cat:'Índice',       logo:'📈',  type:'emoji'},
+  {t:'QQQ',   n:'Nasdaq 100',    cat:'Índice',       logo:'💹',  type:'emoji'},
+  {t:'DIA',   n:'Dow Jones',     cat:'Índice',       logo:'📊',  type:'emoji'},
+  {t:'IWM',   n:'Russell 2000',  cat:'Índice',       logo:'📉',  type:'emoji'},
+  {t:'URTH',  n:'MSCI World',    cat:'Índice',       logo:'🌍',  type:'emoji'},
+  {t:'NVDA',  n:'NVIDIA',        cat:'Tech',         logo:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%2376b900'/%3E%3Cpolygon points='18%2C18 18%2C82 36%2C82 36%2C44 64%2C82 82%2C82 82%2C18 64%2C18 64%2C56 36%2C18' fill='white'/%3E%3C/svg%3E", type:'img'},
+  {t:'AAPL',  n:'Apple',         cat:'Tech',         logo:'https://cdn.simpleicons.org/apple/f7f5ee',     type:'img'},
+  {t:'MSFT',  n:'Microsoft',     cat:'Tech',         logo:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 21'%3E%3Crect width='10' height='10' fill='%23f25022'/%3E%3Crect x='11' width='10' height='10' fill='%237fba00'/%3E%3Crect y='11' width='10' height='10' fill='%2300a4ef'/%3E%3Crect x='11' y='11' width='10' height='10' fill='%23ffb900'/%3E%3C/svg%3E", type:'img'},
+  {t:'AMZN',  n:'Amazon',        cat:'Tech',         logo:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23232F3E'/%3E%3Ctext x='50' y='66' text-anchor='middle' font-size='62' font-weight='900' fill='%23ff9900' font-family='Arial%2Csans-serif'%3Ea%3C/text%3E%3Cpath d='M22 80 Q50 96 78 80' stroke='%23ff9900' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E", type:'img'},
+  {t:'META',  n:'Meta',          cat:'Tech',         logo:'https://cdn.simpleicons.org/meta/0081fb',      type:'img'},
+  {t:'TSLA',  n:'Tesla',         cat:'Tech',         logo:'https://cdn.simpleicons.org/tesla/f7f5ee',     type:'img'},
+  {t:'NFLX',  n:'Netflix',       cat:'Tech',         logo:'https://cdn.simpleicons.org/netflix/e50914',   type:'img'},
+  {t:'GOOGL', n:'Google',        cat:'Tech',         logo:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23EA4335' d='M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.9 2.3 30.3 0 24 0 14.8 0 7 5.4 3.1 13.3l7.9 6.1C13 13.2 18 9.5 24 9.5z'/%3E%3Cpath fill='%234285F4' d='M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24V28h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.2 7-16.6z'/%3E%3Cpath fill='%2334A853' d='M10.9 28.6c-.5-1.5-.8-3.1-.8-4.6s.3-3.1.8-4.6l-7.9-6.1C1.1 16.4 0 20.1 0 24s1.1 7.6 3.1 10.7l7.8-6.1z'/%3E%3Cpath fill='%23FBBC05' d='M24 48c6.3 0 11.6-2.1 15.5-5.7l-7.6-5.9c-2.1 1.4-4.8 2.2-7.9 2.2-6 0-11.1-3.7-12.9-8.9l-7.8 6.1C7 42.6 14.8 48 24 48z'/%3E%3C/svg%3E", type:'img'},
+  {t:'BTC',   n:'Bitcoin',       cat:'Crypto',       logo:'https://cdn.simpleicons.org/bitcoin/f7931a',   type:'img'},
+  {t:'ETH',   n:'Ethereum',      cat:'Crypto',       logo:'https://cdn.simpleicons.org/ethereum/627eea',  type:'img'},
+  {t:'SOL',   n:'Solana',        cat:'Crypto',       logo:'https://cdn.simpleicons.org/solana/9945ff',    type:'img'},
+  {t:'USO',   n:'Petróleo WTI',  cat:'Energía',      logo:'🛢️', type:'emoji'},
+  {t:'UNG',   n:'Gas Natural',   cat:'Energía',      logo:'🔥',  type:'emoji'},
+  {t:'LIT',   n:'Litio',         cat:'Materiales',   logo:'🔋',  type:'emoji'},
+  {t:'VNQ',   n:'Real Estate',   cat:'Inmobiliario', logo:'🏠',  type:'emoji'},
+];
+
+const SLOTS      = ['del1','del2','del3','med1','med2','med3','med4','def1','def2','def3','por1'];
+const SLOT_NAMES = {del1:'Delantero 1',del2:'Delantero 2',del3:'Delantero 3',med1:'Medio 1',med2:'Medio 2',med3:'Medio 3',med4:'Medio 4',def1:'Defensa 1',def2:'Defensa 2',def3:'Defensa 3',por1:'Portero'};
+
+const STEP_PCT   = [0, 0, 15, 28, 45, 62, 74, 86, 100];
+const STEP_LABEL = ['', '', '1 de 6 · Tus datos', '2 de 6 · Las reglas', '3 de 6 · Tu 11', '4 de 6 · Capitán', '5 de 6 · Experiencia', '6 de 6 · Perfil', ''];
+
+const form = { nombre:'', email:'', whatsapp:'', experiencia:'', perfil:'', selections:{}, capitan:'' };
+
+let pickerActiveSlot = null;
+let pickerActiveCat  = 'todos';
+
+// ════════════════════════════════════
+//  NAVEGACIÓN
+// ════════════════════════════════════
+function updateProgress(s) {
+  document.getElementById('progressFill').style.width = STEP_PCT[s] + '%';
+  document.getElementById('progressLabel').textContent = STEP_LABEL[s] || '';
+}
+
+function goStep(from, to) {
+  if (!validateStep(from)) return;
+  if (to === 5) buildCaptainGrid();
+  if (to === 8) submitForm();
+  document.getElementById('step' + from).classList.remove('active');
+  document.getElementById('step' + to).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+  updateProgress(to);
+}
+
+function validateStep(s) {
+  const show = id => document.getElementById(id).style.display = 'block';
+  const hide = id => document.getElementById(id).style.display = 'none';
+
+  if (s === 2) {
+    form.nombre   = document.getElementById('nombre').value.trim();
+    form.email    = document.getElementById('email').value.trim();
+    form.whatsapp = document.getElementById('whatsapp').value.trim();
+    if (!form.nombre || !form.email || !form.whatsapp) { show('err2'); return false; }
+    hide('err2'); return true;
+  }
+  if (s === 4) {
+    if (SLOTS.filter(k => form.selections[k]).length < 11) { show('err4'); return false; }
+    hide('err4'); return true;
+  }
+  if (s === 5) { if (!form.capitan) { show('err5'); return false; } hide('err5'); return true; }
+  if (s === 6) { if (!form.experiencia) { show('err6'); return false; } hide('err6'); return true; }
+  if (s === 7) { if (!form.perfil) { show('err7'); return false; } hide('err7'); return true; }
+  return true;
+}
+
+function selectOpt(el, field) {
+  el.parentElement.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  form[field] = el.dataset.val;
+}
+
+// ════════════════════════════════════
+//  PICKER MODAL
+// ════════════════════════════════════
+function logoHTML(asset, size) {
+  const sz = size || 44;
+  if (asset.type === 'img') {
+    return `<img src="${asset.logo}" width="${sz}" height="${sz}" alt="${asset.t}" onerror="this.style.display='none';this.nextSibling.style.display='flex'" style="border-radius:${sz/4}px;object-fit:contain;background:rgba(255,255,255,.08);padding:3px"><span style="font-size:${sz*0.55}px;display:none;align-items:center;justify-content:center;width:${sz}px;height:${sz}px;font-weight:900;color:var(--gold2)">${asset.t.slice(0,3)}</span>`;
+  }
+  return `<span style="font-size:${sz*0.75}px;line-height:1">${asset.logo}</span>`;
+}
+
+function openPicker(slotId) {
+  pickerActiveSlot = slotId;
+  document.getElementById('pickerSlotLabel').textContent = SLOT_NAMES[slotId];
+  document.getElementById('pickerSearch').value = '';
+  pickerActiveCat = 'todos';
+  const cats = ['todos', ...new Set(POOL.map(a => a.cat))];
+  document.getElementById('pickerCats').innerHTML = cats.map(c =>
+    `<div class="picker-cat ${c === 'todos' ? 'active' : ''}" onclick="setCat('${c}')">${c === 'todos' ? 'Todos' : c}</div>`
+  ).join('');
+  renderPickerGrid();
+  document.getElementById('pickerOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('pickerSearch').focus(), 300);
+}
+
+function closePicker() {
+  document.getElementById('pickerOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  pickerActiveSlot = null;
+}
+
+function closePickerOnBg(e) {
+  if (e.target === document.getElementById('pickerOverlay')) closePicker();
+}
+
+function setCat(cat) {
+  pickerActiveCat = cat;
+  document.querySelectorAll('.picker-cat').forEach(c => c.classList.toggle('active', c.textContent === (cat === 'todos' ? 'Todos' : cat)));
+  renderPickerGrid();
+}
+
+function renderPickerGrid() {
+  const q     = document.getElementById('pickerSearch').value.toLowerCase().trim();
+  const taken = SLOTS.filter(k => k !== pickerActiveSlot && form.selections[k]).map(k => form.selections[k]);
+  let assets  = POOL;
+  if (pickerActiveCat !== 'todos') assets = assets.filter(a => a.cat === pickerActiveCat);
+  if (q) assets = assets.filter(a => a.t.toLowerCase().includes(q) || a.n.toLowerCase().includes(q));
+  document.getElementById('pickerGrid').innerHTML = assets.map(a => {
+    const isTaken = taken.includes(a.t);
+    return `<div class="asset-card ${isTaken ? 'taken' : ''}" onclick="${isTaken ? '' : `pickAsset('${a.t}')`}">
+      <div class="ac-logo">${logoHTML(a, 44)}</div>
+      <div class="ac-ticker">${a.t}</div>
+      <div class="ac-name">${a.n}</div>
+      <div class="ac-cat">${a.cat}</div>
+    </div>`;
+  }).join('') || '<p style="color:var(--muted);text-align:center;padding:24px;grid-column:1/-1">Sin resultados</p>';
+}
+
+function pickAsset(ticker) {
+  if (!pickerActiveSlot) return;
+  const slotId = pickerActiveSlot;
+  const asset  = POOL.find(a => a.t === ticker);
+  form.selections[slotId] = ticker;
+  closePicker();
+  renderSlot(slotId, asset);
+  updateCounter();
+}
+
+// ════════════════════════════════════
+//  RENDERIZAR SLOT
+// ════════════════════════════════════
+function renderSlot(slotId, asset) {
+  const slot = document.getElementById('slot-' + slotId);
+  slot.classList.add('filled');
+  slot.innerHTML = `
+    <div class="slot-remove" onclick="clearSlot(event,'${slotId}')">✕</div>
+    <div style="display:flex;align-items:center;justify-content:center;width:38px;height:38px">${logoHTML(asset, 32)}</div>
+    <div class="slot-ticker">${asset.t}</div>
+    <div class="slot-name-small">${asset.n}</div>`;
+  slot.onclick = () => openPicker(slotId);
+}
+
+function clearSlot(e, slotId) {
+  e.stopPropagation();
+  const slot = document.getElementById('slot-' + slotId);
+  slot.classList.remove('filled');
+  slot.innerHTML = `<span class="slot-empty-icon">+</span><span class="slot-pos-tag">${SLOT_NAMES[slotId].toUpperCase()}</span>`;
+  slot.onclick = () => openPicker(slotId);
+  if (form.capitan === form.selections[slotId]) form.capitan = '';
+  delete form.selections[slotId];
+  updateCounter();
+}
+
+function updateCounter() {
+  const filled = SLOTS.filter(k => form.selections[k]).length;
+  document.getElementById('selCount').textContent = filled;
+  document.getElementById('btnStep4').disabled    = filled < 11;
+}
+
+// ════════════════════════════════════
+//  CAPITÁN
+// ════════════════════════════════════
+function buildCaptainGrid() {
+  form.capitan = '';
+  document.getElementById('captainGrid').innerHTML = SLOTS
+    .filter(k => form.selections[k])
+    .map(k => {
+      const ticker = form.selections[k];
+      const asset  = POOL.find(a => a.t === ticker);
+      return `<div class="cap-opt" data-ticker="${ticker}" onclick="selectCaptain(this)">
+        <div class="cap-c">⚽</div>
+        <div class="cap-logo">${logoHTML(asset, 36)}</div>
+        <div class="cap-ticker">${ticker}</div>
+        <div class="cap-name">${asset?.n || ''}</div>
+      </div>`;
+    }).join('');
+}
+
+function selectCaptain(el) {
+  document.querySelectorAll('.cap-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  form.capitan = el.dataset.ticker;
+}
+
+// ════════════════════════════════════
+//  SUBMIT
+// ════════════════════════════════════
+async function submitForm() {
+  document.getElementById('spinner').style.display        = 'block';
+  document.getElementById('successContent').style.display  = 'none';
+  document.getElementById('duplicateContent').style.display = 'none';
+  document.getElementById('errorContent').style.display    = 'none';
+
+  const payload = {
+    nombre: form.nombre, email: form.email, whatsapp: form.whatsapp,
+    experiencia: form.experiencia, perfil: form.perfil,
+    por1: form.selections['por1'] || '',
+    def1: form.selections['def1'] || '', def2: form.selections['def2'] || '', def3: form.selections['def3'] || '',
+    med1: form.selections['med1'] || '', med2: form.selections['med2'] || '', med3: form.selections['med3'] || '', med4: form.selections['med4'] || '',
+    del1: form.selections['del1'] || '', del2: form.selections['del2'] || '', del3: form.selections['del3'] || '',
+    capitan: form.capitan
+  };
+
+  try {
+    const res  = await fetch(WEBHOOK_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+
+    // Leer respuesta de Make.com
+    const data = await res.json().catch(() => ({ status:'ok' }));
+
+    if (data.status === 'duplicate') {
+      document.getElementById('spinner').style.display         = 'none';
+      document.getElementById('duplicateContent').style.display = 'block';
+      // Mostrar cuál campo duplicó
+      const field = data.field === 'whatsapp' ? 'número de WhatsApp' : 'correo electrónico';
+      document.getElementById('duplicateField').textContent = field;
+    } else {
+      showSuccess();
+    }
+  } catch(err) {
+    document.getElementById('spinner').style.display     = 'none';
+    document.getElementById('errorContent').style.display = 'block';
+    console.error('Webhook error:', err);
+  }
+}
+
+function retrySubmit() {
+  document.getElementById('errorContent').style.display = 'none';
+  submitForm();
+}
+
+// ════════════════════════════════════
+//  VERIFICAR DUPLICADO EN PASO 2
+// ════════════════════════════════════
+async function checkDuplicateAndContinue() {
+  // Primero validar campos vacíos
+  if (!validateStep(2)) return;
+
+  const btn    = document.getElementById('btnStep2');
+  const errDup = document.getElementById('err2dup');
+
+  // Estado de carga
+  btn.disabled     = true;
+  btn.textContent  = 'Verificando…';
+  errDup.style.display = 'none';
+
+  try {
+    const res  = await fetch(CHECK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: form.email, whatsapp: form.whatsapp })
+    });
+    const data = await res.json().catch(() => ({ exists: false }));
+
+    if (data.exists) {
+      const campo = data.field === 'whatsapp' ? 'número de WhatsApp' : 'correo electrónico';
+      errDup.textContent     = `⚠️ Este ${campo} ya tiene un equipo registrado. Solo se permite un 11 por participante.`;
+      errDup.style.display   = 'block';
+      btn.disabled           = false;
+      btn.textContent        = 'Continuar →';
+    } else {
+      btn.disabled    = false;
+      btn.textContent = 'Continuar →';
+      goStep(2, 3);
+    }
+  } catch (err) {
+    // Si el webhook de verificación falla, dejamos pasar (validación al final)
+    console.warn('Check duplicado falló, continuando sin verificar:', err);
+    btn.disabled    = false;
+    btn.textContent = 'Continuar →';
+    goStep(2, 3);
+  }
+}
+
+// ════════════════════════════════════
+//  PANTALLA FINAL CON CANCHA
+// ════════════════════════════════════
+function showSuccess() {
+  document.getElementById('spinner').style.display        = 'none';
+  document.getElementById('successContent').style.display = 'block';
+
+  // Actualizar link de WhatsApp
+  document.querySelector('.btn-whatsapp').href = WA_LINK;
+
+  const cap = form.capitan;
+
+  function sfSlot(slotId) {
+    const ticker = form.selections[slotId];
+    const asset  = POOL.find(a => a.t === ticker);
+    const isCap  = ticker === cap;
+    return `<div class="sf-slot ${isCap ? 'is-cap' : ''}">
+      ${isCap ? '<div class="sf-c">C</div>' : ''}
+      <div style="display:flex;align-items:center;justify-content:center;width:30px;height:30px">${logoHTML(asset, 26)}</div>
+      <div class="sf-ticker">${ticker}</div>
+      <div class="sf-name">${asset?.n || ''}</div>
+    </div>`;
+  }
+
+  document.getElementById('successField').innerHTML = `
+    <div class="sf-section">
+      <div class="sf-label">⚔️ Delanteros</div>
+      <div class="sf-row">${sfSlot('del1')}${sfSlot('del2')}${sfSlot('del3')}</div>
+    </div>
+    <div class="sf-section">
+      <div class="sf-label">🔁 Medios</div>
+      <div class="sf-row">${sfSlot('med1')}${sfSlot('med2')}${sfSlot('med3')}${sfSlot('med4')}</div>
+    </div>
+    <div class="sf-section">
+      <div class="sf-label">🛡️ Defensas</div>
+      <div class="sf-row">${sfSlot('def1')}${sfSlot('def2')}${sfSlot('def3')}</div>
+    </div>
+    <div class="sf-section" style="margin-bottom:0">
+      <div class="sf-label">🧤 Portero</div>
+      <div class="sf-row">${sfSlot('por1')}</div>
+    </div>`;
+}
+
+// ════════════════════════════════════
+//  INIT
+// ════════════════════════════════════
+updateProgress(1);
+</script>
+</body>
+</html>
