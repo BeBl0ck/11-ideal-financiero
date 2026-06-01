@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El 11 Ideal Financiero | Dashboard Global</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#07130d;--bg2:#0b1f14;--gold:#d6b25e;--gold2:#f1d98a;
+      --green:#2ecc71;--red:#ff6b6b;--text:#f7f3e8;--muted:#a9b8ac;
+      --line:rgba(255,255,255,.11);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;
+      background:radial-gradient(circle at top left,rgba(214,178,94,.20),transparent 32%),
+        radial-gradient(circle at top right,rgba(46,204,113,.12),transparent 32%),
+        linear-gradient(135deg,var(--bg),#020704 72%);
+      color:var(--text)}
+    .wrap{max-width:1180px;margin:0 auto;padding:24px}
+    header{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:22px}
+    .logo{width:54px;height:54px;border-radius:18px;background:linear-gradient(135deg,var(--gold),#7c5b1b);display:grid;place-items:center;font-size:28px;box-shadow:0 12px 28px rgba(0,0,0,.35)}
+    h1{font-family:'Oswald',sans-serif;font-size:34px;margin:0;letter-spacing:-.8px}
+    .sub{color:var(--muted);margin-top:4px}
+    .pill{border:1px solid var(--line);background:rgba(255,255,255,.06);padding:9px 13px;border-radius:999px;color:var(--gold2);font-weight:700;font-size:14px}
+    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035));border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.22)}
+    .metric{font-size:28px;font-weight:900;margin:7px 0 0}.label{color:var(--muted);font-size:13px}
+    .up{color:var(--green)}.down{color:var(--red)}
+    .panel{background:rgba(16,41,27,.82);border:1px solid var(--line);border-radius:26px;padding:20px;box-shadow:0 22px 70px rgba(0,0,0,.25);backdrop-filter:blur(10px)}
+    .panel h2{margin:0 0 14px;font-size:21px}
+    .table{width:100%;border-collapse:collapse}
+    .table th{font-size:12px;text-align:left;color:var(--muted);font-weight:700;padding:12px;border-bottom:1px solid var(--line)}
+    .table td{padding:13px 12px;border-bottom:1px solid rgba(255,255,255,.07)}
+    .rank-gold{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#08150f;width:28px;height:28px;border-radius:8px;display:inline-grid;place-items:center;font-weight:900}
+    .rank-normal{width:28px;height:28px;border-radius:8px;display:inline-grid;place-items:center;font-weight:900;background:rgba(255,255,255,.08)}
+    .user{font-weight:800}
+    .tag{font-size:12px;padding:5px 9px;border-radius:999px;background:rgba(214,178,94,.12);color:var(--gold2);border:1px solid rgba(214,178,94,.25)}
+    .assets{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .asset{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--line);background:rgba(255,255,255,.045);padding:12px;border-radius:16px}
+    .ticker{font-weight:900}.name{display:block;color:var(--muted);font-size:12px;margin-top:2px}.perf{font-weight:900}
+    .section{margin-top:18px}
+    .field-row{display:flex;gap:8px;margin-bottom:14px}
+    select{border:1px solid var(--line);border-radius:14px;background:#0b1f14;color:var(--text);padding:12px;font-weight:700;flex:1}
+    .btn-ver{background:linear-gradient(135deg,var(--gold),#b68b35);color:#140f02;cursor:pointer;border:none;border-radius:14px;padding:12px 18px;font-weight:700}
+    .loading{opacity:.5;font-size:14px;color:var(--muted);text-align:center;padding:24px}
+    .search-wrap{margin-bottom:14px}
+    .search-input{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:14px;color:var(--text);padding:11px 14px;font-size:14px}
+
+    /* USER CARD */
+    .user-info{background:rgba(255,255,255,.045);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    .info-box{text-align:center}
+    .info-box .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+    .info-box .val{font-size:22px;font-weight:900;margin-top:4px}
+
+    /* CANCHA */
+    .cancha{
+      background-color:#164e27;
+      background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22500%22 height=%22600%22 viewBox=%220 0 500 600%22%3E%3Crect width=%22500%22 height=%22600%22 fill=%22%23164e27%22/%3E%3Crect x=%220%22 y=%220%22 width=%22500%22 height=%2275%22 fill=%22%231a5c2e%22/%3E%3Crect x=%220%22 y=%22150%22 width=%22500%22 height=%2275%22 fill=%22%221a5c2e%22/%3E%3Crect x=%220%22 y=%22300%22 width=%22500%22 height=%2275%22 fill=%22%221a5c2e%22/%3E%3Crect x=%220%22 y=%22450%22 width=%22500%22 height=%2275%22 fill=%22%221a5c2e%22/%3E%3Crect x=%2212%22 y=%2212%22 width=%22476%22 height=%22576%22 fill=%22none%22 stroke=%22white%22 stroke-opacity=%220.35%22 stroke-width=%222.5%22/%3E%3Cline x1=%2212%22 y1=%22300%22 x2=%22488%22 y2=%22300%22 stroke=%22white%22 stroke-opacity=%220.35%22 stroke-width=%222%22/%3E%3Ccircle cx=%22250%22 cy=%22300%22 r=%2265%22 fill=%22none%22 stroke=%22white%22 stroke-opacity=%220.28%22 stroke-width=%222%22/%3E%3Ccircle cx=%22250%22 cy=%22300%22 r=%225%22 fill=%22white%22 fill-opacity=%220.4%22/%3E%3Crect x=%22140%22 y=%2212%22 width=%22220%22 height=%2280%22 fill=%22none%22 stroke=%22white%22 stroke-opacity=%220.28%22 stroke-width=%221.8%22/%3E%3Crect x=%22180%22 y=%2212%22 width=%22140%22 height=%2236%22 fill=%22none%22 stroke=%22white%22 stroke-opacity=%220.18%22 stroke-width=%221.5%22/%3E%3Crect x=%22140%22 y=%22508%22 width=%22220%22 height=%2280%22 fill=%22none%22 stroke=%22white%22 stroke-opacity=%220.28%22 stroke-width=%221.8%22/%3E%3Crect x=%22180%22 y=%22552%22 width=%22140%22 height=%2236%22 fill=%22none%22 stroke=%22white%22 stroke-opacity=%220.18%22 stroke-width=%221.5%22/%3E%3C/svg%3E');
+      background-size:cover;
+      background-position:center;
+      border:2px solid rgba(255,255,255,0.14);
+      border-radius:20px;
+      padding:20px 14px;
+    }
+    .cancha-row{display:grid;gap:8px;margin:8px 0}
+    .cancha-row.r1{grid-template-columns:1fr;max-width:160px;margin-left:auto;margin-right:auto}
+    .cancha-row.r3{grid-template-columns:repeat(3,1fr)}
+    .cancha-row.r4{grid-template-columns:repeat(4,1fr)}
+    .cancha-label{text-align:center;font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.1em;margin:4px 0}
+    .pcard{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.18);border-radius:12px;padding:10px 6px;text-align:center;position:relative}
+    .pcard.cap{border-color:var(--gold2);background:rgba(244,217,147,0.12)}
+    .pcard .cbadge{position:absolute;top:5px;right:5px;width:18px;height:18px;border-radius:50%;background:var(--gold2);color:#08150f;font-size:9px;font-weight:900;display:grid;place-items:center}
+    .pcard .pt{font-size:11px;color:var(--muted);margin-bottom:2px}
+    .pcard .pn{font-size:13px;font-weight:900;color:var(--text)}
+    .pcard .pr{font-size:11px;font-weight:700}
+
+    .note{color:var(--muted);font-size:13px;line-height:1.5}
+    .footer{margin-top:18px;color:var(--muted);font-size:12px;text-align:center}
+    @media(max-width:900px){.grid,.cards{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}header{align-items:flex-start;flex-direction:column}.assets{grid-template-columns:1fr 1fr}h1{font-size:28px}.wrap{padding:16px}.desktop-hide{display:none}.user-info{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div style="display:flex;gap:14px;align-items:center">
+        <div class="logo">⚽</div>
+        <div>
+          <h1>El 11 Ideal Financiero</h1>
+          <div class="sub">Dashboard global del torneo · Copa Mundial 2026</div>
+        </div>
+      </div>
+      <div class="pill" id="jornadaPill">Cargando…</div>
+    </header>
+
+    <div class="cards">
+      <div class="card"><div class="label">Participantes</div><div class="metric" id="totalParticipantes">--</div></div>
+      <div class="card"><div class="label">Capital virtual por 11</div><div class="metric up">$1,000,000</div></div>
+      <div class="card"><div class="label">Activo MVP</div><div class="metric" id="mvpTicker">--</div></div>
+      <div class="card"><div class="label">Retorno MVP</div><div class="metric up" id="mvpRet">--</div></div>
+    </div>
+
+    <div class="grid">
+      <main>
+        <section class="panel">
+          <h2>🏆 Ranking Mundial</h2>
+          <div class="search-wrap">
+            <input class="search-input" id="searchInput" placeholder="Buscar participante…" oninput="filterLeaderboard()" />
+          </div>
+          <table class="table">
+            <thead><tr><th>#</th><th>Participante</th><th>Rendimiento</th><th class="desktop-hide">Capitán</th></tr></thead>
+            <tbody id="leaderboard"><tr><td colspan="4" class="loading">Cargando ranking…</td></tr></tbody>
+          </table>
+        </section>
+
+        <section class="panel section">
+          <h2>🔥 Activos líderes</h2>
+          <div class="assets" id="topAssets"><div class="loading">Cargando…</div></div>
+        </section>
+      </main>
+
+      <aside>
+        <section class="panel">
+          <h2>👤 Ver equipo de un participante</h2>
+          <div class="field-row">
+            <select id="userSelect"><option value="">Selecciona…</option></select>
+            <button class="btn-ver" onclick="renderUser()">Ver</button>
+          </div>
+          <div id="userCard"></div>
+          <div id="userCancha"></div>
+        </section>
+
+        <section class="panel section">
+          <h2>📌 Regla de competencia</h2>
+          <p class="note">Cada participante elige 11 activos del pool oficial. Todos pesan igual. El ranking se calcula con el rendimiento real promedio del 11 desde el precio de apertura del 11 de junio. En caso de empate, desempata el rendimiento individual del capitán.</p>
+        </section>
+      </aside>
+    </div>
+
+    <div class="footer">
+      El 11 Ideal Financiero · Copa Mundial 2026 · Los rendimientos son reales, el capital es virtual. No representa asesoría de inversión.
+    </div>
+  </div>
+
+<script>
+  const SHEET_ID = "1rPbEhKpG0kyTm6K7kHPr0e56ZDf0szFn7IL3qxgwClE";
+  let _allUsers = [];
+  let _preciosMap = {};
+  let _participantes = [];
+
+  const POOL_NAMES = {
+    'CETES':'CETES','GLD':'Oro','SLV':'Plata','DXY':'Dólar','IEF':'Treasury 10Y',
+    'SPY':'S&P 500','QQQ':'Nasdaq 100','DIA':'Dow Jones','IWM':'Russell 2000','URTH':'MSCI World',
+    'NVDA':'NVIDIA','AAPL':'Apple','MSFT':'Microsoft','AMZN':'Amazon','META':'Meta',
+    'TSLA':'Tesla','NFLX':'Netflix','GOOGL':'Google','BTC':'Bitcoin','ETH':'Ethereum',
+    'SOL':'Solana','USO':'Petróleo WTI','UNG':'Gas Natural','LIT':'Litio','VNQ':'Real Estate'
+  };
+
+  async function fetchSheet(sheetName) {
+    const url  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+    const res  = await fetch(url);
+    const text = await res.text();
+    const i0   = text.indexOf('{'), i1 = text.lastIndexOf('}');
+    if (i0 === -1) throw new Error('Respuesta inválida');
+    const j = JSON.parse(text.slice(i0, i1 + 1));
+    if (!j.table || !j.table.rows) return [];
+    const cols = j.table.cols.map(c => c.label || c.id);
+    return j.table.rows
+      .map(row => { const o={}; cols.forEach((c,i)=>{ o[c]=row.c?.[i]?.v??null; }); return o; })
+      .filter(r => r[cols[0]]);
+  }
+
+  function renderLeaderboard(users) {
+    const tb = document.getElementById('leaderboard');
+    if (!users || !users.length) {
+      tb.innerHTML = '<tr><td colspan="4" class="loading">La competencia arranca el <strong>11 de junio</strong>. ¡Inscríbete!</td></tr>';
+      return;
+    }
+    tb.innerHTML = users.map((u,i) => `
+      <tr>
+        <td><div class="${i<3?'rank-gold':'rank-normal'}">${i+1}</div></td>
+        <td class="user">${u.nombre}</td>
+        <td class="${u.rendimiento>=0?'up':'down'}">${u.rendimiento>=0?'+':''}${u.rendimiento.toFixed(2)}%</td>
+        <td class="desktop-hide"><span class="tag">${u.capitan}</span></td>
+      </tr>`).join('');
+  }
+
+  function filterLeaderboard() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    renderLeaderboard(q ? _allUsers.filter(u=>u.nombre.toLowerCase().includes(q)) : _allUsers);
+  }
+
+  function pCard(ticker, isCap) {
+    const name  = POOL_NAMES[ticker] || ticker;
+    const ret   = _preciosMap[ticker];
+    const retStr = ret != null ? `<div class="pr ${ret>=0?'up':'down'}">${ret>=0?'+':''}${ret.toFixed(2)}%</div>` : '';
+    return `<div class="pcard ${isCap?'cap':''}">
+      ${isCap?'<div class="cbadge">C</div>':''}
+      <div class="pt">${ticker}</div>
+      <div class="pn">${name}</div>
+      ${retStr}
+    </div>`;
+  }
+
+  function renderUser() {
+    const idx = document.getElementById('userSelect').value;
+    if (idx===''||!_allUsers[idx]) return;
+    const u = _allUsers[idx];
+
+    const rend = u.rendimiento;
+    const capitalInicial = 1000000;
+    const valorActual = capitalInicial * (1 + rend/100);
+    const ganancia = valorActual - capitalInicial;
+
+    // Info cards
+    document.getElementById('userCard').innerHTML = `
+      <div class="user-info">
+        <div class="info-box">
+          <div class="lbl">Posición</div>
+          <div class="val" style="color:var(--gold2)">#${Number(idx)+1}</div>
+        </div>
+        <div class="info-box">
+          <div class="lbl">Rendimiento 11</div>
+          <div class="val ${rend>=0?'up':'down'}">${rend>=0?'+':''}${rend.toFixed(2)}%</div>
+        </div>
+        <div class="info-box">
+          <div class="lbl">Valor actual</div>
+          <div class="val ${ganancia>=0?'up':'down'}">$${Math.round(valorActual).toLocaleString('es-MX')}</div>
+        </div>
+      </div>`;
+
+    // Cancha
+    const p = _participantes.find(p => p['Nombre'] && String(p['Nombre']).trim().toLowerCase() === u.nombre.trim().toLowerCase());
+
+    if (p) {
+      const por1  = String(p['Portero']    || '');
+      const def1  = String(p['Defensa1']   || '');
+      const def2  = String(p['Defensa2']   || '');
+      const def3  = String(p['Defensa3']   || '');
+      const med1  = String(p['Medio1']     || '');
+      const med2  = String(p['Medio2']     || '');
+      const med3  = String(p['Medio3']     || '');
+      const med4  = String(p['Medio4']     || '');
+      const del1  = String(p['Delantero1'] || '');
+      const del2  = String(p['Delantero2'] || '');
+      const del3  = String(p['Delantero3'] || '');
+      const cap   = String(p['Capitan']    || u.capitan || '');
+
+      document.getElementById('userCancha').innerHTML = `
+        <div class="cancha" style="margin-top:14px;">
+          <div class="cancha-label">⚽ 11 Ideal Financiero · ${u.nombre}</div>
+          <div class="cancha-row r1">${pCard(cap, true)}</div>
+          <div class="cancha-label">⚔️ Delanteros</div>
+          <div class="cancha-row r3">${pCard(del1,false)}${pCard(del2,false)}${pCard(del3,false)}</div>
+          <div class="cancha-label">🔁 Medios</div>
+          <div class="cancha-row r4">${pCard(med1,false)}${pCard(med2,false)}${pCard(med3,false)}${pCard(med4,false)}</div>
+          <div class="cancha-label">🛡️ Defensas</div>
+          <div class="cancha-row r3">${pCard(def1,false)}${pCard(def2,false)}${pCard(def3,false)}</div>
+          <div class="cancha-label">🧤 Portero</div>
+          <div class="cancha-row r1">${pCard(por1,false)}</div>
+        </div>`;
+    } else {
+      document.getElementById('userCancha').innerHTML = `<p class="loading">No se encontró el equipo de este participante.</p>`;
+    }
+  }
+
+  async function loadData() {
+    try {
+      const [leaderRows, preciosRows, participantesRows] = await Promise.all([
+        fetchSheet('Leaderboard'),
+        fetchSheet('Precios'),
+        fetchSheet('Participantes')
+      ]);
+
+      _participantes = participantesRows;
+
+      // Ranking
+      _allUsers = leaderRows
+        .filter(r => r['Nombre'])
+        .map(r => ({
+          nombre:      String(r['Nombre']     || ''),
+          rendimiento: parseFloat(r['Rendimiento']) || 0,
+          capitan:     String(r['Capitan']    || ''),
+          retCapitan:  parseFloat(r['Ret_Capitan'])  || 0,
+        }))
+        .sort((a,b) => { const d=b.rendimiento-a.rendimiento; return Math.abs(d)<0.0001?b.retCapitan-a.retCapitan:d; });
+
+      // Precios — intenta ambos nombres de columna (Ticker o Simbolo)
+      const precios = preciosRows
+        .filter(p => p['Ticker'] || p['Simbolo'])
+        .map(p => ({
+          ticker: String(p['Ticker'] || p['Simbolo'] || ''),
+          nombre: String(p['Nombre'] || p['Ticker'] || p['Simbolo'] || ''),
+          ret:    parseFloat(p['Rendimiento']) || 0
+        }));
+
+      precios.forEach(p => { _preciosMap[p.ticker] = p.ret; });
+
+      // Métricas
+      document.getElementById('totalParticipantes').textContent = _allUsers.length || '--';
+      const mvp = [...precios].sort((a,b) => b.ret - a.ret)[0];
+      document.getElementById('mvpTicker').textContent = mvp?.ticker || '--';
+      document.getElementById('mvpRet').textContent    = mvp ? `${mvp.ret>=0?'+':''}${mvp.ret.toFixed(2)}%` : '--';
+      document.getElementById('jornadaPill').textContent = _allUsers.length ? 'En curso' : 'Próximamente';
+
+      // Leaderboard
+      renderLeaderboard(_allUsers);
+
+      // Selector
+      const sel = document.getElementById('userSelect');
+      sel.innerHTML = '<option value="">Selecciona un participante…</option>' +
+        _allUsers.map((u,i) => `<option value="${i}">${u.nombre}</option>`).join('');
+
+      // Top activos
+      const sorted = [...precios].sort((a,b) => b.ret-a.ret).slice(0,8);
+      document.getElementById('topAssets').innerHTML = sorted.map(a =>
+        `<div class="asset">
+          <div><span class="ticker">${a.ticker}</span><span class="name">${POOL_NAMES[a.ticker]||a.nombre}</span></div>
+          <div class="perf ${a.ret>=0?'up':'down'}">${a.ret>=0?'+':''}${a.ret.toFixed(2)}%</div>
+        </div>`).join('');
+
+    } catch(e) {
+      console.error('Error cargando datos:', e);
+      document.getElementById('leaderboard').innerHTML =
+        '<tr><td colspan="4" class="loading">⚽ El torneo arranca el 11 de junio.</td></tr>';
+      document.getElementById('jornadaPill').textContent = 'Próximamente';
+    }
+  }
+
+  loadData();
+</script>
+</body>
+</html>
